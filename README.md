@@ -27,6 +27,7 @@ Card for timer entities in the Lovelace user interface of Home Assistant
 | show_title  | boolean | **Optional** | Show card title                                          | `false` |
 | show_header | boolean | **Optional** | Show rotor headings                                      | `false` |
 | show_hour   | string  | **Optional** | Show hour rotors `true`, `false`, `auto`                 | `false` |
+| show_day    | boolean | **Optional** | Show a 4-digit day counter, switching the display to `tttt-hh-mm` (no seconds) | `false` |
 | styles      | object  | **Optional** | Card style                                               |         |
 | localize    | object  | **Optional** | Card text localization                                   |         |
 
@@ -39,6 +40,10 @@ Home Assistant timer updates default duration whenever timer starts. if duration
 Set `show_hour` to `auto` to enable auto hours.
 It toggles between HH:MM and MM:SS mode depend on remaining time.
 HH:MM will be displayed when in idle state. To know what is being displayed, it is recommned to enable the headers.
+
+### **Show Days**
+
+Set `show_day` to `true` to display the countdown as `tttt-hh-mm` (a 4-digit day counter, hours and minutes). Seconds are hidden and the hour rotors are always shown while this is enabled, regardless of `show_hour`.
 
 ### **Non-timer entity**
 

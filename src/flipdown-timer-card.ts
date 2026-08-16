@@ -272,6 +272,7 @@ export class FlipdownTimer extends LitElement {
       this.fd = new FlipDown(timeRemaining, fddiv, {
         show_header: this.config.show_header,
         show_hour: this.config.show_hour,
+        show_day: this.config.show_day,
         bt_location: button_location,
         theme: this.config.theme,
         headings: this.config.localizeHeader,
@@ -302,7 +303,8 @@ export class FlipdownTimer extends LitElement {
   private _handleRotorClick(item: any, param: number, inc: boolean): boolean {
     const state = this.hass.states[this.config.entity!].state;
     if (state !== 'idle') return false;
-    const max = [9, 9, 5, 9, 5, 9];
+    const dayDigits = this.config.show_day ? this.fd.dayRotorCount : 0;
+    const max = [...Array(dayDigits).fill(9), 9, 9, 5, 9, 5, 9];
 
     const rotorTarget = item.offsetParent;
 
@@ -373,12 +375,28 @@ export class FlipdownTimer extends LitElement {
   }
 
   private _getRotorTime(): string {
-    let durationNew = "";
+    const dayDigits = this.config.show_day ? this.fd.dayRotorCount : 0;
+    let days = 0;
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+
     this.fd.rotorTop.forEach((el, i) => {
-      durationNew += el.textContent;
-      if (i == 1 || i == 3) durationNew += ":";
+      const digit = Number(el.textContent);
+      if (i < dayDigits) {
+        days = days * 10 + digit;
+      } else if (i < dayDigits + 2) {
+        hours = hours * 10 + digit;
+      } else if (i < dayDigits + 4) {
+        minutes = minutes * 10 + digit;
+      } else {
+        seconds = seconds * 10 + digit;
+      }
     });
-    return durationNew;
+
+    hours += days * 24;
+    const pad2 = (n: number): string => n.toString().padStart(2, "0");
+    return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`;
   }
 
   private _showWarning(warning: string): TemplateResult {
