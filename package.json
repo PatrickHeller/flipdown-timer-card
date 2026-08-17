@@ -54,7 +54,11 @@
     "lit": "^2.1.2",
     "lit-html": "2.1.2",
     "lit-element": "3.1.2",
-    "@lit/reactive-element": "1.2.1"
+    "@lit/reactive-element": "1.2.1",
+    "tslib": "^2.6.2"
+  },
+  "overrides": {
+    "tslib": "^2.6.2"
   },
   "scripts": {
     "start": "rollup -c rollup.config.dev.js --watch",
