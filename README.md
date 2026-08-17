@@ -109,7 +109,7 @@ Localize(customize) strings on buttons and headings.
 | Key    | Value                                                          |
 | ------ | -------------------------------------------------------------- |
 | button | `start, stop, cancel, resume, reset` in your language(5 words) |
-| header | `Hours, Minutes, Seconds` in your language(3 words)            |
+| header | `Hours, Minutes, Seconds` in your language(3 words), or `Days, Hours, Minutes, Seconds` (4 words) to also localize the day counter's heading |
 
 ## Full Example
 

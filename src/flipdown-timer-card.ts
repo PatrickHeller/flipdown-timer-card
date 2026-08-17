@@ -85,7 +85,7 @@ export class FlipdownTimer extends LitElement {
     };
 
     let localizeBtn = ["start", "stop", "cancel", "resume", "reset"]
-    let localizeHeader = ["Hours", "Minutes", "Seconds"]
+    let localizeHeader = ["Days", "Hours", "Minutes", "Seconds"]
 
     if (config.hasOwnProperty("localize")) {
       if (config.localize.button) {
@@ -95,13 +95,15 @@ export class FlipdownTimer extends LitElement {
         }
       }
       if (config.localize.header) {
-        const BtnText = config.localize.header.replace(/\s/g, '').split(",");
-        if (BtnText.length === 3) {
-          localizeHeader = BtnText;
+        const HeaderText = config.localize.header.replace(/\s/g, '').split(",");
+        if (HeaderText.length === 4) {
+          localizeHeader = HeaderText;
+        } else if (HeaderText.length === 3) {
+          // Legacy format: Hours, Minutes, Seconds only - Days keeps its default label
+          localizeHeader = ["Days", ...HeaderText];
         }
       }
     }
-    localizeHeader.unshift("Days");
 
     this.config.localizeBtn = localizeBtn;
     this.config.localizeHeader = localizeHeader;

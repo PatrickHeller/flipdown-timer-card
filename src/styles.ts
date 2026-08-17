@@ -120,11 +120,13 @@ export const styles = css`
     text-align: center;
     align-content: center;
     display: block;
+    overflow-x: auto;
   }
 
   .flipdown {
     overflow: visible;
     display: inline-block;
+    white-space: nowrap;
   }
 
   .flipdown .rotor-group {
