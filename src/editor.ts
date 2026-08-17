@@ -175,7 +175,31 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
   }
 
   private async loadCardHelpers(): Promise<void> {
-    this._helpers = await (window as any).loadCardHelpers();
+    const helpers = await (window as any).loadCardHelpers();
+    await this._loadEntityPicker(helpers);
+    this._helpers = helpers;
+  }
+
+  // ha-entity-picker is lazy-loaded by Home Assistant's frontend and may not
+  // be registered yet if nothing else on the dashboard has used it. Creating
+  // a stock "entities" card and asking for its config element forces HA to
+  // load the module that defines it, the same trick importMoreInfoControl
+  // uses above for ha-switch. This runs before _helpers is set so render()
+  // (which waits on _helpers) doesn't fire until the picker is ready.
+  private async _loadEntityPicker(helpers: any): Promise<void> {
+    if (customElements.get('ha-entity-picker')) {
+      return;
+    }
+    try {
+      const card = await helpers.createCardElement({ type: 'entities', entities: [] });
+      await customElements.whenDefined(card.localName);
+      const ctor = customElements.get(card.localName) as any;
+      if (ctor?.getConfigElement) {
+        await ctor.getConfigElement();
+      }
+    } catch (e) {
+      // Best effort - if this fails the picker just won't be available yet.
+    }
   }
 
   private _toggleAction(ev): void {
