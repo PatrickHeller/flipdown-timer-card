@@ -35,8 +35,8 @@ console.info(
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'flipdown-timer-card',
-  name: 'Flipdown Timer Card',
-  description: 'A template custom card for you to create something awesome',
+  name: 'Flipdown Timer Card (Patrick Fork)',
+  description: 'Flip-style countdown card for timer entities, with an optional tttt-hh-mm day counter',
 });
 
 export function durationToSeconds(duration: string): number {
