@@ -164,13 +164,19 @@ export const styles = css`
 
   .flipdown .rotor-group-heading {
     width: calc(var(--rotor-width, 50px) * 2 + 5px);
-    height: 30px;
+    height: auto;
+    min-height: 30px;
   }
 
   .flipdown .rotor-group-heading:before {
     display: block;
     line-height: 30px;
     text-align: center;
+    /* Long words (e.g. "Sekunden") shouldn't force the narrow day-counter
+       columns wider than their rotors - wrap/break instead of overflowing. */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .flipdown .hide {
