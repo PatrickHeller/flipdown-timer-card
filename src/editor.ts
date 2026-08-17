@@ -84,6 +84,10 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
     return this._config?.show_error || false;
   }
 
+  get _show_day(): boolean {
+    return this._config?.show_day || false;
+  }
+
   get _tap_action(): ActionConfig {
     return this._config?.tap_action || { action: 'more-info' };
   }
@@ -157,6 +161,13 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
                   <ha-switch
                     .checked=${this._show_error !== false}
                     .configValue=${'show_error'}
+                    @change=${this._valueChanged}
+                  ></ha-switch>
+                </ha-formfield>
+                <ha-formfield .label=${`Day counter (tttt-hh-mm) ${this._show_day ? 'off' : 'on'}`}>
+                  <ha-switch
+                    .checked=${this._show_day === true}
+                    .configValue=${'show_day'}
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
