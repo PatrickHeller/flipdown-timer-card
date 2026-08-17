@@ -63,6 +63,18 @@ export class FlipdownTimer extends LitElement {
     return {};
   }
 
+  // Tells the Sections dashboard grid how this card wants to be sized, so it
+  // stops warning about unsupported resizing and gives the card the full
+  // row width by default (which the responsive scaling in _init() then
+  // fits the rotors into).
+  public getGridOptions(): Record<string, unknown> {
+    return {
+      columns: 'full',
+      rows: 2,
+      min_rows: 1,
+    };
+  }
+
   // TODO Add any properities that should cause your element to re-render here
   // https://lit-element.polymer-project.org/guide/properties
   @property({ attribute: false }) public hass!: HomeAssistant;

@@ -1,6 +1,17 @@
 import { css } from '@lit/reactive-element';
 
 export const styles = css`
+  /* Without this, the card's natural (unscaled) content width can force a
+     CSS Grid/Flexbox ancestor - e.g. a Home Assistant Sections dashboard -
+     to grow wider than the viewport before the responsive scaling script
+     ever gets a chance to shrink it, since grid/flex items default to a
+     min-width based on their content. */
+  :host {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+  }
+
   /* THEMES */
   /********** Theme: hass **********/
   /* Font styles */
