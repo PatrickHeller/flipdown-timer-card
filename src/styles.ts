@@ -206,17 +206,17 @@ export const styles = css`
   }
 
   .flipdown .delimeter span {
-    width: 10px;
-    height: 10px;
+    width: var(--delimeter-size, 10px);
+    height: var(--delimeter-size, 10px);
     border-radius: 50%;
     position: absolute;
-    left: calc(50% - 5px);
+    left: calc(50% - (var(--delimeter-size, 10px) / 2));
   }
   .flipdown .delimeter-span-top {
-    top: calc(var(--rotor-height, 80px) / 2 - 20px);
+    top: calc(var(--rotor-height, 80px) / 2 - (var(--delimeter-size, 10px) * 2));
   }
   .flipdown .delimeter-span-bottom {
-    bottom: calc(var(--rotor-height, 80px) / 2 - 20px);
+    bottom: calc(var(--rotor-height, 80px) / 2 - (var(--delimeter-size, 10px) * 2));
   }
 
   .flipdown .rotor {

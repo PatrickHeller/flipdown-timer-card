@@ -258,6 +258,7 @@ export class FlipdownTimer extends LitElement {
             --rotor-height: ${(this.config.styles.rotor && this.config.styles.rotor.height) || this._defaultRotorHeight()};
             --rotor-space:  ${(this.config.styles.rotor && this.config.styles.rotor.space) || this._defaultRotorSpace()};
             --rotor-fontsize:  ${(this.config.styles.rotor && this.config.styles.rotor.fontsize) || this._defaultRotorFontsize()};
+            --delimeter-size: ${this._defaultDelimeterSize()};
             --button-fontsize:  ${(this.config.styles.button && this.config.styles.button.fontsize) || '1em'};
             ${(this.config.styles.button && this.config.styles.button.width) && '--button-width: ' + this.config.styles.button.width + ';'}
             ${(this.config.styles.button && this.config.styles.button.height) && '--button-height: ' + this.config.styles.button.height + ';' }
@@ -284,6 +285,10 @@ export class FlipdownTimer extends LitElement {
 
   private _defaultRotorSpace(): string {
     return this.config.show_day ? 'clamp(5px, 2.6vw, 20px)' : '20px';
+  }
+
+  private _defaultDelimeterSize(): string {
+    return this.config.show_day ? 'clamp(3px, 1.3vw, 10px)' : '10px';
   }
 
   private _defaultRotorFontsize(): string {
