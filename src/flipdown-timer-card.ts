@@ -254,10 +254,10 @@ export class FlipdownTimer extends LitElement {
       html`<hui-generic-entity-row .hass=${this.hass} .config=${this.config}></hui-generic-entity-row>`:
       html``}
           <div class="flipdown_shell" style="
-            --rotor-width:  ${(this.config.styles.rotor && this.config.styles.rotor.width) || '50px'};
-            --rotor-height: ${(this.config.styles.rotor && this.config.styles.rotor.height) || '80px'};
-            --rotor-space:  ${(this.config.styles.rotor && this.config.styles.rotor.space) || '20px'};
-            --rotor-fontsize:  ${(this.config.styles.rotor && this.config.styles.rotor.fontsize) || '4rem'};
+            --rotor-width:  ${(this.config.styles.rotor && this.config.styles.rotor.width) || this._defaultRotorWidth()};
+            --rotor-height: ${(this.config.styles.rotor && this.config.styles.rotor.height) || this._defaultRotorHeight()};
+            --rotor-space:  ${(this.config.styles.rotor && this.config.styles.rotor.space) || this._defaultRotorSpace()};
+            --rotor-fontsize:  ${(this.config.styles.rotor && this.config.styles.rotor.fontsize) || this._defaultRotorFontsize()};
             --button-fontsize:  ${(this.config.styles.button && this.config.styles.button.fontsize) || '1em'};
             ${(this.config.styles.button && this.config.styles.button.width) && '--button-width: ' + this.config.styles.button.width + ';'}
             ${(this.config.styles.button && this.config.styles.button.height) && '--button-height: ' + this.config.styles.button.height + ';' }
@@ -268,6 +268,28 @@ export class FlipdownTimer extends LitElement {
       </ha-card>
     `;
   }
+
+  // Default rotor sizes fit comfortably on a phone screen without any JS
+  // measurement, using vw so they're never at the mercy of a dashboard
+  // ancestor's own (possibly content-stretched) box size. show_day adds 4
+  // extra rotors, so it gets a smaller vw-based default; the plain
+  // hh:mm:ss layout already fit fine and keeps its original fixed sizes.
+  private _defaultRotorWidth(): string {
+    return this.config.show_day ? 'clamp(14px, 7.5vw, 50px)' : '50px';
+  }
+
+  private _defaultRotorHeight(): string {
+    return this.config.show_day ? 'clamp(22px, 12vw, 80px)' : '80px';
+  }
+
+  private _defaultRotorSpace(): string {
+    return this.config.show_day ? 'clamp(6px, 3vw, 20px)' : '20px';
+  }
+
+  private _defaultRotorFontsize(): string {
+    return this.config.show_day ? 'clamp(1.1rem, 4.8vw, 4rem)' : '4rem';
+  }
+
   protected _init(): void {
     const fddiv = this.shadowRoot?.getElementById('flipdown');
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
