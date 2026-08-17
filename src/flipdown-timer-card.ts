@@ -305,7 +305,9 @@ export class FlipdownTimer extends LitElement {
 
   // Scales the flipdown down (instead of letting it overflow/require
   // horizontal scrolling) when it's wider than the card, e.g. on narrow
-  // mobile screens with the day counter enabled.
+  // mobile screens with the day counter enabled. Shrinks the shell's own
+  // box to the scaled size too, so the card doesn't reserve/scroll through
+  // the original, larger footprint.
   private _setupResponsiveScale(): void {
     if (this._resizeObserver) return;
 
@@ -313,22 +315,36 @@ export class FlipdownTimer extends LitElement {
     const flipdown = this.shadowRoot?.getElementById('flipdown');
     if (!shell || !flipdown) return;
 
+    // Measure available space from an ancestor we never resize ourselves,
+    // otherwise the observer would react to its own size changes.
+    const container = shell.parentElement ?? this;
+
     const applyScale = (): void => {
       flipdown.style.transform = '';
+      shell.style.width = '';
       shell.style.height = '';
+      shell.style.overflow = '';
+      shell.style.marginLeft = '';
+      shell.style.marginRight = '';
+
       const naturalWidth = flipdown.scrollWidth;
       const naturalHeight = flipdown.scrollHeight;
-      const available = shell.clientWidth;
+      const available = container.clientWidth;
+
       if (available > 0 && naturalWidth > available) {
         const scale = available / naturalWidth;
-        flipdown.style.transformOrigin = 'top center';
+        flipdown.style.transformOrigin = 'top left';
         flipdown.style.transform = `scale(${scale})`;
+        shell.style.overflow = 'hidden';
+        shell.style.width = `${naturalWidth * scale}px`;
         shell.style.height = `${naturalHeight * scale}px`;
+        shell.style.marginLeft = 'auto';
+        shell.style.marginRight = 'auto';
       }
     };
 
     this._resizeObserver = new ResizeObserver(applyScale);
-    this._resizeObserver.observe(shell);
+    this._resizeObserver.observe(container);
     applyScale();
   }
 
