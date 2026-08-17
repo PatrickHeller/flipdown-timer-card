@@ -125,9 +125,12 @@ export class FlipdownTimer extends LitElement {
     return hasConfigOrEntityChanged(this, changedProps, false);
   }
 
+  private _resizeObserver?: ResizeObserver;
+
   public disconnectedCallback(): void {
     super.disconnectedCallback();
     if(this.fd) this.fd.stop();
+    this._resizeObserver?.disconnect();
   }
 
   public connectedCallback(): void {
@@ -296,6 +299,37 @@ export class FlipdownTimer extends LitElement {
       this.fd.button1.addEventListener('click', () => this._handleBtnClick(1));
       this.fd.button2.addEventListener('click', () => this._handleBtnClick(2));
     }
+
+    this._setupResponsiveScale();
+  }
+
+  // Scales the flipdown down (instead of letting it overflow/require
+  // horizontal scrolling) when it's wider than the card, e.g. on narrow
+  // mobile screens with the day counter enabled.
+  private _setupResponsiveScale(): void {
+    if (this._resizeObserver) return;
+
+    const shell = this.shadowRoot?.querySelector('.flipdown_shell') as HTMLElement | null;
+    const flipdown = this.shadowRoot?.getElementById('flipdown');
+    if (!shell || !flipdown) return;
+
+    const applyScale = (): void => {
+      flipdown.style.transform = '';
+      shell.style.height = '';
+      const naturalWidth = flipdown.scrollWidth;
+      const naturalHeight = flipdown.scrollHeight;
+      const available = shell.clientWidth;
+      if (available > 0 && naturalWidth > available) {
+        const scale = available / naturalWidth;
+        flipdown.style.transformOrigin = 'top center';
+        flipdown.style.transform = `scale(${scale})`;
+        shell.style.height = `${naturalHeight * scale}px`;
+      }
+    };
+
+    this._resizeObserver = new ResizeObserver(applyScale);
+    this._resizeObserver.observe(shell);
+    applyScale();
   }
 
   protected firstUpdated(): null | void {
