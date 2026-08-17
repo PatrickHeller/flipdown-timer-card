@@ -101,11 +101,8 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
       return html``;
     }
 
-    // The climate more-info has ha-switch and paper-dropdown-menu elements that are lazy loaded unless explicitly done here
+    // The climate more-info has ha-switch elements that are lazy loaded unless explicitly done here
     this._helpers.importMoreInfoControl('climate');
-
-    // You can restrict on domain type
-    const entities = Object.keys(this.hass.states).filter(eid => eid.substr(0, eid.indexOf('.')) === 'timer' || eid.substr(0, eid.indexOf('.')) === 'input_datetime' || eid.substr(0, eid.indexOf('.')) === 'sensor');
 
     return html`
       <div class="card-config">
@@ -119,19 +116,15 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
         ${options.required.show
           ? html`
               <div class="values">
-                <paper-dropdown-menu
+                <ha-entity-picker
                   label="Entity (Required)"
-                  @value-changed=${this._valueChanged}
+                  .hass=${this.hass}
+                  .value=${this._entity}
                   .configValue=${'entity'}
-                >
-                  <paper-listbox slot="dropdown-content" .selected=${entities.indexOf(this._entity)}>
-                    ${entities.map(entity => {
-                      return html`
-                        <paper-item>${entity}</paper-item>
-                      `;
-                    })}
-                  </paper-listbox>
-                </paper-dropdown-menu>
+                  .includeDomains=${['timer', 'input_datetime', 'sensor']}
+                  @value-changed=${this._valueChanged}
+                  allow-custom-entity
+                ></ha-entity-picker>
               </div>
             `
           : ''}
@@ -146,12 +139,12 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
         ${options.appearance.show
           ? html`
               <div class="values">
-                <paper-input
+                <ha-textfield
                   label="Name (Optional)"
                   .value=${this._name}
                   .configValue=${'name'}
-                  @value-changed=${this._valueChanged}
-                ></paper-input>
+                  @change=${this._valueChanged}
+                ></ha-textfield>
                 <br />
                 <ha-formfield .label=${`Toggle title ${this._show_title ? 'off' : 'on'}`}>
                   <ha-switch
@@ -207,18 +200,19 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
       return;
     }
     const target = ev.target;
-    if (this[`_${target.configValue}`] === target.value) {
+    const value = ev.detail && Object.prototype.hasOwnProperty.call(ev.detail, 'value') ? ev.detail.value : target.value;
+    if (this[`_${target.configValue}`] === value) {
       return;
     }
     if (target.configValue) {
-      if (target.value === '') {
+      if (value === '' || value === undefined) {
         const tmpConfig = { ...this._config };
         delete tmpConfig[target.configValue];
         this._config = tmpConfig;
       } else {
         this._config = {
           ...this._config,
-          [target.configValue]: target.checked !== undefined ? target.checked : target.value,
+          [target.configValue]: target.checked !== undefined ? target.checked : value,
         };
       }
     }
