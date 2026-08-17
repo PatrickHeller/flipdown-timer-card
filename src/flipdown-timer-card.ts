@@ -138,11 +138,13 @@ export class FlipdownTimer extends LitElement {
   }
 
   private _resizeObserver?: ResizeObserver;
+  private _applyScale?: () => void;
 
   public disconnectedCallback(): void {
     super.disconnectedCallback();
     if(this.fd) this.fd.stop();
     this._resizeObserver?.disconnect();
+    if (this._applyScale) window.removeEventListener('resize', this._applyScale);
   }
 
   public connectedCallback(): void {
@@ -341,7 +343,15 @@ export class FlipdownTimer extends LitElement {
 
       const naturalWidth = flipdown.scrollWidth;
       const naturalHeight = flipdown.scrollHeight;
-      const available = container.clientWidth;
+      // container.clientWidth can itself be stretched by this same card's
+      // unscaled content on some dashboard layouts (e.g. a CSS Grid
+      // ancestor sizing itself to fit our content before this runs), which
+      // would make it useless as a measurement. window.innerWidth never
+      // depends on anything this card renders, so it's used as a hard
+      // ceiling alongside it.
+      const available = container.clientWidth > 0
+        ? Math.min(container.clientWidth, window.innerWidth)
+        : window.innerWidth;
 
       if (available > 0 && naturalWidth > available) {
         const scale = available / naturalWidth;
@@ -357,6 +367,8 @@ export class FlipdownTimer extends LitElement {
 
     this._resizeObserver = new ResizeObserver(applyScale);
     this._resizeObserver.observe(container);
+    this._applyScale = applyScale;
+    window.addEventListener('resize', applyScale);
     applyScale();
   }
 
