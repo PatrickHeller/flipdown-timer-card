@@ -9,6 +9,9 @@ on:
         description: 'Release tag to attach the built asset to'
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Prepare release
