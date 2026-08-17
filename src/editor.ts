@@ -164,7 +164,7 @@ export class FlipdownTimerCardEditor extends LitElement implements LovelaceCardE
                     @change=${this._valueChanged}
                   ></ha-switch>
                 </ha-formfield>
-                <ha-formfield .label=${`Day counter (tttt-hh-mm) ${this._show_day ? 'off' : 'on'}`}>
+                <ha-formfield .label=${`Day counter (tttt-hh-mm-ss) ${this._show_day ? 'off' : 'on'}`}>
                   <ha-switch
                     .checked=${this._show_day === true}
                     .configValue=${'show_day'}

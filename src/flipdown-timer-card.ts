@@ -36,7 +36,7 @@ console.info(
 (window as any).customCards.push({
   type: 'flipdown-timer-card',
   name: 'Flipdown Timer Card (Patrick Fork)',
-  description: 'Flip-style countdown card for timer entities, with an optional tttt-hh-mm day counter',
+  description: 'Flip-style countdown card for timer entities, with an optional tttt-hh-mm-ss day counter',
 });
 
 export function durationToSeconds(duration: string): number {

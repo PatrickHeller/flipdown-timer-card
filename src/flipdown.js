@@ -302,10 +302,8 @@ export class FlipDown {
     const rotorGroup = document.createElement("div");
     rotorGroup.className = "rotor-group";
     // Hours group is hidden unless explicitly shown, unless day rotors are in
-    // use, in which case hours are always part of the tttt-hh-mm display.
+    // use, in which case hours are always part of the tttt-hh-mm-ss display.
     if (!this.opts.showDay && (!this.opts.showHour || this.opts.showHour == 'auto') && rotorIndex == 1) rotorGroup.className += " hide";
-    // Seconds are dropped from the display once days are shown (tttt-hh-mm).
-    if (this.opts.showDay && rotorIndex == 3) rotorGroup.className += " hide";
     if (!this.opts.showDay && this.opts.showHour == 'auto' && this.state == 'idle') {
       rotorGroup.className += " autohour";
       this.headerShift = true;
