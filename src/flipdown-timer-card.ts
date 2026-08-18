@@ -308,8 +308,13 @@ export class FlipdownTimer extends LitElement {
     return this.config.show_day ? 'clamp(2.5px, 1.25vw, 10px)' : '10px';
   }
 
+  // fontsize needs to track height (not width) at roughly 0.8x - the
+  // rotor-top/rotor-leaf-front line-height is the FULL --rotor-height (only
+  // the top or bottom half is ever shown via overflow:hidden, the
+  // split-flap illusion), so a fontsize too small for the height leaves
+  // the digit visibly off-center right at that seam.
   private _defaultRotorFontsize(): string {
-    return this.config.show_day ? 'clamp(0.9rem, 7.3vw, 4rem)' : '4rem';
+    return this.config.show_day ? 'clamp(1.2rem, 9.9vw, 4rem)' : '4rem';
   }
 
   protected _init(): void {
