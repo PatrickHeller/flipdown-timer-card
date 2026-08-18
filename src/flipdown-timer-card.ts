@@ -276,23 +276,23 @@ export class FlipdownTimer extends LitElement {
   // extra rotors, so it gets a smaller vw-based default; the plain
   // hh:mm:ss layout already fit fine and keeps its original fixed sizes.
   private _defaultRotorWidth(): string {
-    return this.config.show_day ? 'clamp(12px, 6.5vw, 50px)' : '50px';
+    return this.config.show_day ? 'clamp(14px, 8vw, 50px)' : '50px';
   }
 
   private _defaultRotorHeight(): string {
-    return this.config.show_day ? 'clamp(19px, 10.4vw, 80px)' : '80px';
+    return this.config.show_day ? 'clamp(22px, 12.8vw, 80px)' : '80px';
   }
 
   private _defaultRotorSpace(): string {
-    return this.config.show_day ? 'clamp(5px, 2.6vw, 20px)' : '20px';
+    return this.config.show_day ? 'clamp(6px, 3.2vw, 20px)' : '20px';
   }
 
   private _defaultDelimeterSize(): string {
-    return this.config.show_day ? 'clamp(3px, 1.3vw, 10px)' : '10px';
+    return this.config.show_day ? 'clamp(3.5px, 1.6vw, 10px)' : '10px';
   }
 
   private _defaultRotorFontsize(): string {
-    return this.config.show_day ? 'clamp(0.9rem, 4.2vw, 4rem)' : '4rem';
+    return this.config.show_day ? 'clamp(1.05rem, 5.1vw, 4rem)' : '4rem';
   }
 
   protected _init(): void {
