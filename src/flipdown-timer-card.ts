@@ -281,24 +281,29 @@ export class FlipdownTimer extends LitElement {
   // maximize size - if you want it bigger on your own setup and have the
   // room, override via styles.rotor.width/height/space/fontsize in the
   // card config, which always takes precedence over these.
+  // Calibrated against a real, user-confirmed fit on a Google Pixel Pro
+  // phone (~412px CSS viewport) at width:30px height:60px fontsize:2.2rem
+  // space:14px - a taller, more slender rotor than the plain hh:mm:ss
+  // default, which the day counter's extra rotors need to fit a phone
+  // screen without looking squished.
   private _defaultRotorWidth(): string {
-    return this.config.show_day ? 'clamp(13px, 7vw, 50px)' : '50px';
+    return this.config.show_day ? 'clamp(14px, 7.3vw, 50px)' : '50px';
   }
 
   private _defaultRotorHeight(): string {
-    return this.config.show_day ? 'clamp(21px, 11.2vw, 80px)' : '80px';
+    return this.config.show_day ? 'clamp(28px, 14.6vw, 80px)' : '80px';
   }
 
   private _defaultRotorSpace(): string {
-    return this.config.show_day ? 'clamp(5px, 2.8vw, 20px)' : '20px';
+    return this.config.show_day ? 'clamp(6px, 3.4vw, 20px)' : '20px';
   }
 
   private _defaultDelimeterSize(): string {
-    return this.config.show_day ? 'clamp(3px, 1.4vw, 10px)' : '10px';
+    return this.config.show_day ? 'clamp(3px, 1.5vw, 10px)' : '10px';
   }
 
   private _defaultRotorFontsize(): string {
-    return this.config.show_day ? 'clamp(1rem, 4.5vw, 4rem)' : '4rem';
+    return this.config.show_day ? 'clamp(1rem, 8.6vw, 4rem)' : '4rem';
   }
 
   protected _init(): void {
