@@ -275,24 +275,30 @@ export class FlipdownTimer extends LitElement {
   // ancestor's own (possibly content-stretched) box size. show_day adds 4
   // extra rotors, so it gets a smaller vw-based default; the plain
   // hh:mm:ss layout already fit fine and keeps its original fixed sizes.
+  // These vw-based defaults are a compromise: a phone's actual available
+  // width varies with card padding and dashboard column layout, which pure
+  // vw can't see. Tuned to reliably fit on a typical phone rather than to
+  // maximize size - if you want it bigger on your own setup and have the
+  // room, override via styles.rotor.width/height/space/fontsize in the
+  // card config, which always takes precedence over these.
   private _defaultRotorWidth(): string {
-    return this.config.show_day ? 'clamp(14px, 8vw, 50px)' : '50px';
+    return this.config.show_day ? 'clamp(13px, 7vw, 50px)' : '50px';
   }
 
   private _defaultRotorHeight(): string {
-    return this.config.show_day ? 'clamp(22px, 12.8vw, 80px)' : '80px';
+    return this.config.show_day ? 'clamp(21px, 11.2vw, 80px)' : '80px';
   }
 
   private _defaultRotorSpace(): string {
-    return this.config.show_day ? 'clamp(6px, 3.2vw, 20px)' : '20px';
+    return this.config.show_day ? 'clamp(5px, 2.8vw, 20px)' : '20px';
   }
 
   private _defaultDelimeterSize(): string {
-    return this.config.show_day ? 'clamp(3.5px, 1.6vw, 10px)' : '10px';
+    return this.config.show_day ? 'clamp(3px, 1.4vw, 10px)' : '10px';
   }
 
   private _defaultRotorFontsize(): string {
-    return this.config.show_day ? 'clamp(1.05rem, 5.1vw, 4rem)' : '4rem';
+    return this.config.show_day ? 'clamp(1rem, 4.5vw, 4rem)' : '4rem';
   }
 
   protected _init(): void {
